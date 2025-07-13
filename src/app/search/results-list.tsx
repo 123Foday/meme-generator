@@ -3,7 +3,16 @@
 import { IKImage } from "imagekitio-next";
 import Link from "next/link";
 import { HeartFilledIcon } from "@radix-ui/react-icons";
-
+import {
+  FacebookShareButton,
+  WhatsappShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  TwitterIcon,
+  TelegramIcon,
+} from "react-share";
 import { ImageKitFile } from "@/types/imagekit";
 import {
   Card,
@@ -48,10 +57,33 @@ export function ResultsList({
             />
           </CardContent>
 
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2">
+            {/* Customize Button */}
             <Button asChild>
               <Link href={`/customize/${file.fileId}`}>Customize</Link>
             </Button>
+
+            {/* Share Section */}
+            <div className="mt-2">
+              <p className="text-sm font-medium mb-1">Share:</p>
+              <div className="flex gap-2">
+                <FacebookShareButton url={`http://localhost:3000/customize/${file.fileId}`}>
+                  <FacebookIcon size={32} round />
+                </FacebookShareButton>
+
+                <TwitterShareButton url={`http://localhost:3000/customize/${file.fileId}`}>
+                  <TwitterIcon size={32} round />
+                </TwitterShareButton>
+
+                <WhatsappShareButton url={`http://localhost:3000/customize/${file.fileId}`}>
+                  <WhatsappIcon size={32} round />
+                </WhatsappShareButton>
+
+                <TelegramShareButton url={`http://localhost:3000/customize/${file.fileId}`}>
+                  <TelegramIcon size={32} round />
+                </TelegramShareButton>
+              </div>
+            </div>
           </CardFooter>
         </Card>
       ))}

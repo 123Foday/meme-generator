@@ -8,6 +8,24 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TwitterPicker } from "react-color";
 
+const memeSuggestions = [
+  "When the code finally works… and I don't know why",
+  "What is I specilize on in CS",
+  "404: Motivation not found.",
+  "You vs the bug she told you not to worry about.",
+  "How it started How it's going.",
+  "Deploy on Friday? …Hold my coffee",
+  "Me thinking of Learning React",
+  "Me thinking of my best lecturer"
+];
+
+function getRandomSuggestions(count = 3) {
+  return memeSuggestions
+    .sort(() => 0.5 - Math.random())
+    .slice(0, count);
+}
+
+
 export function TextOverlay({
   index,
   onUpdate,
@@ -25,6 +43,8 @@ export function TextOverlay({
   const [textOverlayXPosition, setTextOverlayXPosition] = useState(0);
   const [textOverlayYPosition, setTextOverlayYPosition] = useState(0);
   const [applyTextBackground, setApplyTextBackground] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [hasMounted, setHasMounted] = useState(false);
   const [textBgColor, setTextBgColor] = useState("#FFFFFF");
 
   const xPositionDecimal = textOverlayXPosition / 100;
@@ -32,6 +52,12 @@ export function TextOverlay({
   const bgColor = applyTextBackground
     ? textBgColor.replace("#", "")
     : undefined;
+
+
+  useEffect(() => {
+  setSuggestions(getRandomSuggestions());
+  setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     onUpdate(
@@ -55,6 +81,21 @@ export function TextOverlay({
       <div className="flex justify-between gap-8">
         <div className="flex-grow">
           <Label htmlFor={`textOverlay${index}`}>Text Overlay {index}</Label>
+          <div className="mb-4">
+              <p className="font-medium mb-2">Need inspiration? Try one of these:</p>
+              <div className="flex flex-wrap gap-2">
+                {suggestions.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setTextOverlay(s)} // Use your existing state handler
+                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
           <Input
             id={`textOverlay${index}`}
             onChange={(e) => {
